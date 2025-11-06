@@ -27,7 +27,7 @@ Funcionalidades principais:
 
   - Gradle como sistema de build.
 
-  - Banco de dados relacional (por exemplo, H2, PostgreSQL ou MySQL — especifique conforme seu ambiente).
+  - Banco de dados relacional (HSQLDB, Liquibase).
 
   - CSS/HTML para a camada de interface (já que o projeto contém arquivos CSS e HTML).
 
