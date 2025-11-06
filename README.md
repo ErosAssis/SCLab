@@ -5,7 +5,7 @@ Bem-vindo ao SCLab — um sistema voltado para o gerenciamento de equipamentos l
 🔍 Visão Geral
 
 Este projeto tem como objetivo oferecer uma solução de backend + interface web para gerenciamento de dispositivos de leitura RFID, armazenamento de dados de leitura, registro de qual porta foi utilizada, e identificação de tags.
-Desenvolvido utilizando Java, Jmix, Gradle, com padrão MVC, visando sistemas laboratoriais ou de automação em que seja necessário rastrear leituras de TAGs via porta física ou virtual.
+Desenvolvido utilizando Java, Jmix, Gradle, com padrão MVC, visando sistemas laboratoriais ou de automação em que seja necessário rastrear leituras de TAGs via porta física.
 
 Funcionalidades principais:
 
