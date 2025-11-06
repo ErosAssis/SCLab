@@ -29,6 +29,4 @@ Funcionalidades principais:
 
   - Banco de dados relacional (HSQLDB, Liquibase).
 
-  - CSS/HTML para a camada de interface (já que o projeto contém arquivos CSS e HTML).
-
   - Git & GitHub para controle de versão.
