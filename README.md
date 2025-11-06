@@ -1,6 +1,6 @@
 SCLab
 
-Bem-vindo ao SCLab — um sistema voltado para o gerenciamento de equipamentos laboratorias, a gestão de leitores RFID, comunicação de portas, e rastreamento de tags, desenvolvido em Java com o framework Jmix.
+Bem-vindo ao SCLab — um sistema voltado para o gerenciamento de equipamentos laboratoriais, a gestão de leitores RFID, comunicação de portas, e rastreamento de tags, desenvolvido em Java com o framework Jmix.
 
 ⚠️ Observação: ajuste esta frase conforme o real escopo do seu projeto.
 
