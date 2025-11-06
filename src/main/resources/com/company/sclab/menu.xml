@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="application" title="msg://com.company.sclab/menu.application.title" opened="true">
+        <item view="User.list" title="msg://com.company.sclab.view.user/UserListView.title"/>
+        <item view="Emprestimo.list" title="msg://com.company.sclab.view.emprestimo/emprestimoListView.title"/>
+        <item view="Equipamento.list" title="msg://com.company.sclab.view.equipamento/equipamentoListView.title"/>
+        <item view="TipoEquipamento.list"
+              title="msg://com.company.sclab.view.tipoequipamento/tipoEquipamentoListView.title"/>
+        <item view="RfidLeitor.list" title="msg://com.company.sclab.view.rfidleitor/rfidLeitorListView.title"/>
+    </menu>
+
+</menu-config>

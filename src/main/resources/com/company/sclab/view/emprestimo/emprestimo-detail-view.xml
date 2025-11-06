@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://emprestimoDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="emprestimoDc"
+                  class="com.company.sclab.entity.Emprestimo">
+            <fetchPlan extends="_base">
+                <property name="idRFID" fetchPlan="_base">
+                    <property name="tipoEquip" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="emprestimoDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="emprestimoDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <textField id="comodatarioField" property="comodatario"/>
+            <datePicker id="dataRetiradaField" property="dataRetirada"/>
+            <datePicker id="dataDevolucaoField" property="dataDevolucao"/>
+            <textField id="responsavelRetiradaField" property="responsavelRetirada"/>
+            <textField id="responsavelDevolucaoField" property="responsavelDevolucao"/>
+            <textField id="observacoesField" property="observacoes"/>
+            <entityPicker id="idRFIDField" property="idRFID">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

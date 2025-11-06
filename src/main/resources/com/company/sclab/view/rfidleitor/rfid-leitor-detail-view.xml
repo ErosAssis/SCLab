@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://rfidLeitorDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="rfidLeitorDc"
+                  class="com.company.sclab.entity.RfidLeitor">
+            <fetchPlan extends="_base"/>
+            <loader id="rfidLeitorDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="rfidLeitorDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+
+            <textField id="tagCodigoField" property="tagCodigo"/>
+            <datePicker id="lidoEmField" property="lidoEm"/>
+            <textField id="portaUtilizadaField" property="portaUtilizada"/>
+
+            <!-- Botão para ler o RFID -->
+            <button id="lerRfidButton"
+                    text="Ler RFID"/>
+        </formLayout>
+
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+
+</view>

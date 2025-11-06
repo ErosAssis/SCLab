@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://emprestimoListView.title"
+      focusComponent="emprestimoesDataGrid">
+    <data>
+        <collection id="emprestimoesDc"
+                    class="com.company.sclab.entity.Emprestimo">
+            <fetchPlan extends="_base">
+                <property name="idRFID" fetchPlan="_base">
+                    <property name="tipoEquip" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="emprestimoesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Emprestimo e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="emprestimoesDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createButton" action="emprestimoesDataGrid.createAction"/>
+            <button id="editButton" action="emprestimoesDataGrid.editAction"/>
+            <button id="removeButton" action="emprestimoesDataGrid.removeAction"/>
+            <simplePagination id="pagination" dataLoader="emprestimoesDl"/>
+        </hbox>
+        <dataGrid id="emprestimoesDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="emprestimoesDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="createAction" type="list_create"/>
+                <action id="editAction" type="list_edit"/>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="comodatario"/>
+                <column property="dataRetirada"/>
+                <column property="dataDevolucao"/>
+                <column property="responsavelRetirada"/>
+                <column property="responsavelDevolucao"/>
+                <column property="observacoes"/>
+                <column property="idRFID"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectButton" action="selectAction"/>
+            <button id="discardButton" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
