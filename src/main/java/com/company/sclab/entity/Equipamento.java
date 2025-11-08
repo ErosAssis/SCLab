@@ -13,9 +13,8 @@ import java.util.UUID;
 @JmixEntity
 @Table(name = "EQUIPAMENTO", indexes = {
         @Index(name = "IDX_EQUIPAMENTO_TIPO_EQUIP", columnList = "TIPO_EQUIP_ID")
-    }, uniqueConstraints = {
-        @UniqueConstraint(name = "UNQ_EQUIPAMENTO_ID_RFID", columnNames = {"ID_RFID"})
-})
+    }
+)
 @Entity
 public class Equipamento {
     @JmixGeneratedValue

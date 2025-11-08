@@ -15,10 +15,7 @@ import java.util.UUID;
 @Table(name = "EMPRESTIMO", indexes = {
         @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_RETIRADA", columnList = "RESPONSAVEL_RETIRADA_ID"),
         @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_DEVOLUCAO", columnList = "RESPONSAVEL_DEVOLUCAO_ID")
-    },
-        uniqueConstraints = {
-            @UniqueConstraint(name = "UNQ_EMPRESTIMO_ID_RFID", columnNames = {"ID_RFID"})
-        }
+    }
 )
 @Entity
 public class Emprestimo {
