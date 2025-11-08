@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://leitorView.title">
+    <layout spacing="true" padding="true" alignItems="CENTER">
+        <h1>Leitor RFID</h1>
+        <span id="statusLabel" text="Conectando ao leitor..." />
+        <textField id="tagField" label="Tag Lida" readOnly="true" width="300px"/>
+    </layout>
+</view>

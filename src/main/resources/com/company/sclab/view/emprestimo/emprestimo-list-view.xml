@@ -7,9 +7,8 @@
         <collection id="emprestimoesDc"
                     class="com.company.sclab.entity.Emprestimo">
             <fetchPlan extends="_base">
-                <property name="idRFID" fetchPlan="_base">
-                    <property name="tipoEquip" fetchPlan="_base"/>
-                </property>
+                <property name="responsavelDevolucao" fetchPlan="_base"/>
+                <property name="responsavelRetirada" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="emprestimoesDl" readOnly="true">
                 <query>
@@ -54,10 +53,11 @@
                 <column property="comodatario"/>
                 <column property="dataRetirada"/>
                 <column property="dataDevolucao"/>
-                <column property="responsavelRetirada"/>
-                <column property="responsavelDevolucao"/>
                 <column property="observacoes"/>
+                <column property="id"/>
                 <column property="idRFID"/>
+                <column property="responsavelDevolucao"/>
+                <column property="responsavelRetirada"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

@@ -1,6 +1,5 @@
 package com.company.sclab.entity;
 
-import io.jmix.core.HasTimeZone;
 import io.jmix.core.annotation.Secret;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
@@ -8,22 +7,23 @@ import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import io.jmix.security.authentication.JmixUserDetails;
-import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
 @JmixEntity
 @Entity
-@Table(name = "USER_", indexes = {
-        @Index(name = "IDX_USER__ON_USERNAME", columnList = "USERNAME", unique = true)
+@Table(name = "USER_", uniqueConstraints = {
+        @UniqueConstraint(name = "IDX_USER__ON_USERNAME", columnNames = {"USERNAME"})
 })
-public class User implements JmixUserDetails, HasTimeZone {
+public class User implements JmixUserDetails {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     private UUID id;
 
@@ -31,6 +31,7 @@ public class User implements JmixUserDetails, HasTimeZone {
     @Column(name = "VERSION", nullable = false)
     private Integer version;
 
+    @InstanceName
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
@@ -51,9 +52,6 @@ public class User implements JmixUserDetails, HasTimeZone {
 
     @Column(name = "ACTIVE")
     private Boolean active = true;
-
-    @Column(name = "TIME_ZONE_ID")
-    private String timeZoneId;
 
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
@@ -153,24 +151,11 @@ public class User implements JmixUserDetails, HasTimeZone {
         return Boolean.TRUE.equals(active);
     }
 
-    @InstanceName
     @DependsOnProperties({"firstName", "lastName", "username"})
     public String getDisplayName() {
         return String.format("%s %s [%s]", (firstName != null ? firstName : ""),
                 (lastName != null ? lastName : ""), username).trim();
     }
 
-    @Override
-    public String getTimeZoneId() {
-        return timeZoneId;
-    }
 
-    @Override
-    public boolean isAutoTimeZone() {
-        return true;
-    }
-
-    public void setTimeZoneId(final String timeZoneId) {
-        this.timeZoneId = timeZoneId;
-    }
 }

@@ -6,9 +6,8 @@
         <instance id="emprestimoDc"
                   class="com.company.sclab.entity.Emprestimo">
             <fetchPlan extends="_base">
-                <property name="idRFID" fetchPlan="_base">
-                    <property name="tipoEquip" fetchPlan="_base"/>
-                </property>
+                <property name="responsavelDevolucao" fetchPlan="_base"/>
+                <property name="responsavelRetirada" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="emprestimoDl"/>
         </instance>
@@ -29,15 +28,20 @@
             <textField id="comodatarioField" property="comodatario"/>
             <datePicker id="dataRetiradaField" property="dataRetirada"/>
             <datePicker id="dataDevolucaoField" property="dataDevolucao"/>
-            <textField id="responsavelRetiradaField" property="responsavelRetirada"/>
-            <textField id="responsavelDevolucaoField" property="responsavelDevolucao"/>
-            <textField id="observacoesField" property="observacoes"/>
-            <entityPicker id="idRFIDField" property="idRFID">
+            <entityPicker id="responsavelRetiradaField" property="responsavelRetirada">
                 <actions>
                     <action id="entityLookupAction" type="entity_lookup"/>
                     <action id="entityClearAction" type="entity_clear"/>
                 </actions>
             </entityPicker>
+            <entityPicker id="responsavelDevolucaoField" property="responsavelDevolucao">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <textField id="observacoesField" property="observacoes"/>
+            <textField id="idRFIDField" property="idRFID"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseButton" action="saveAction"/>

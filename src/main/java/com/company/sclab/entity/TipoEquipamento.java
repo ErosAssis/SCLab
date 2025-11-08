@@ -1,6 +1,7 @@
 package com.company.sclab.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
@@ -19,6 +20,7 @@ public class TipoEquipamento {
     @Version
     private Integer version;
 
+    @InstanceName
     @Column(name = "TITULO")
     private String titulo;
 

@@ -1,10 +1,12 @@
-package com.company.sclab;
+package com.company.sclab.app;
 
 import com.fazecast.jSerialComm.SerialPort;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class RfidService {
@@ -33,40 +35,67 @@ public class RfidService {
         }
     }
 
-    // Lê a tag do leitor com espera de até 2 segundos
+    // Lê a tag do leitor com suporte a delimitadores <STX>, <ETX>, \r e \n
     public String lerTag() {
         if (serialPort == null || !serialPort.isOpen()) {
             throw new IllegalStateException("Porta serial não conectada.");
         }
 
-        byte[] buffer = new byte[128];
-        StringBuilder sb = new StringBuilder();
         long startTime = System.currentTimeMillis();
+        byte[] buffer = new byte[256];
+        StringBuilder dados = new StringBuilder();
 
-        while (System.currentTimeMillis() - startTime < 2000) { // espera até 2 segundos
+        while (System.currentTimeMillis() - startTime < 2000) { // até 2 segundos de espera
             while (serialPort.bytesAvailable() > 0) {
                 int bytesLidos = serialPort.readBytes(buffer, buffer.length);
                 if (bytesLidos > 0) {
-                    sb.append(new String(buffer, 0, bytesLidos, StandardCharsets.UTF_8));
+                    dados.append(new String(buffer, 0, bytesLidos, StandardCharsets.UTF_8));
                 }
             }
-            if (sb.length() > 0) break;
-            try { Thread.sleep(50); } catch (InterruptedException ignored) {}
+
+            // Tenta extrair uma tag completa usando padrões conhecidos
+            String tag = extrairTag(dados.toString());
+            if (tag != null && !tag.isEmpty()) {
+                return tag;
+            }
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {}
         }
 
-        // Limpa caracteres indesejados (STX, ETX, etc.)
-        String raw = sb.toString().trim();
-        raw = raw.replaceAll("[^a-zA-Z0-9]", "");
-
-        // Se for muito longa, corta para o tamanho típico da tag
-        if (raw.length() > 12) {
-            raw = raw.substring(0, 12);
-        }
-
-        return raw;
+        return "";
     }
 
-    // Detecta automaticamente a porta do leitor (opcional)
+    // Função auxiliar que tenta identificar uma tag completa
+    private String extrairTag(String input) {
+        // Remove caracteres invisíveis exceto delimitadores
+        input = input.replaceAll("[^\\x02\\x03\\r\\nA-Za-z0-9]", "");
+
+        // 1️⃣ Caso padrão: entre <STX> e <ETX>
+        Pattern patternSTX = Pattern.compile("\\x02([A-Za-z0-9]+)\\x03");
+        Matcher matcherSTX = patternSTX.matcher(input);
+        if (matcherSTX.find()) {
+            return matcherSTX.group(1);
+        }
+
+        // 2️⃣ Caso delimitado por \r ou \n (sem STX/ETX)
+        Pattern patternRN = Pattern.compile("[\\r\\n]+([A-Za-z0-9]{4,})[\\r\\n]+");
+        Matcher matcherRN = patternRN.matcher(input);
+        if (matcherRN.find()) {
+            return matcherRN.group(1);
+        }
+
+        // 3️⃣ Se não achar delimitadores, mas a string é longa o suficiente
+        String raw = input.trim().replaceAll("[^A-Za-z0-9]", "");
+        if (raw.length() >= 8 && raw.length() <= 16) {
+            return raw;
+        }
+
+        return null; // nenhum padrão detectado
+    }
+
+    // Detecta automaticamente a porta do leitor
     public String detectarPortaLeitor() {
         for (String porta : listarPortas()) {
             if (conectar(porta)) {

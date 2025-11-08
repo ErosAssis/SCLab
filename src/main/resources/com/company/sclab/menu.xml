@@ -7,7 +7,7 @@
         <item view="Equipamento.list" title="msg://com.company.sclab.view.equipamento/equipamentoListView.title"/>
         <item view="TipoEquipamento.list"
               title="msg://com.company.sclab.view.tipoequipamento/tipoEquipamentoListView.title"/>
-        <item view="RfidLeitor.list" title="msg://com.company.sclab.view.rfidleitor/rfidLeitorListView.title"/>
+        <item view="LeitorView" title="msg://com.company.sclab.view.leitor/leitorView.title"/>
     </menu>
 
 </menu-config>

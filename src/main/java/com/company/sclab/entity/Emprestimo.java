@@ -1,6 +1,9 @@
 package com.company.sclab.entity;
 
+import io.jmix.core.MetadataTools;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +13,8 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "EMPRESTIMO", indexes = {
-        @Index(name = "IDX_EMPRESTIMO_ID_RFID", columnList = "ID_RFID_ID")
+        @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_RETIRADA", columnList = "RESPONSAVEL_RETIRADA_ID"),
+        @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_DEVOLUCAO", columnList = "RESPONSAVEL_DEVOLUCAO_ID")
 })
 @Entity
 public class Emprestimo {
@@ -34,27 +38,44 @@ public class Emprestimo {
     @Column(name = "DATA_DEVOLUCAO")
     private LocalDate dataDevolucao;
 
+    @JoinColumn(name = "RESPONSAVEL_RETIRADA_ID", nullable = false)
     @NotNull
-    @Column(name = "RESPONSAVEL_RETIRADA", nullable = false)
-    private String responsavelRetirada;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User responsavelRetirada;
 
-    @Column(name = "RESPONSAVEL_DEVOLUCAO")
-    private String responsavelDevolucao;
+    @JoinColumn(name = "RESPONSAVEL_DEVOLUCAO_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User responsavelDevolucao;
 
     @Column(name = "OBSERVACOES")
     private String observacoes;
 
+    @Column(name = "ID_RFID", nullable = false)
     @NotNull
-    @JoinColumn(name = "ID_RFID_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Equipamento idRFID;
+    private String idRFID;
 
-    public void setIdRFID(Equipamento idRFID) {
-        this.idRFID = idRFID;
+    public User getResponsavelDevolucao() {
+        return responsavelDevolucao;
     }
 
-    public Equipamento getIdRFID() {
+    public void setResponsavelDevolucao(User responsavelDevolucao) {
+        this.responsavelDevolucao = responsavelDevolucao;
+    }
+
+    public User getResponsavelRetirada() {
+        return responsavelRetirada;
+    }
+
+    public void setResponsavelRetirada(User responsavelRetirada) {
+        this.responsavelRetirada = responsavelRetirada;
+    }
+
+    public String getIdRFID() {
         return idRFID;
+    }
+
+    public void setIdRFID(String idRFID) {
+        this.idRFID = idRFID;
     }
 
     public String getObservacoes() {
@@ -63,22 +84,6 @@ public class Emprestimo {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
-    }
-
-    public String getResponsavelDevolucao() {
-        return responsavelDevolucao;
-    }
-
-    public void setResponsavelDevolucao(String responsavelDevolucao) {
-        this.responsavelDevolucao = responsavelDevolucao;
-    }
-
-    public String getResponsavelRetirada() {
-        return responsavelRetirada;
-    }
-
-    public void setResponsavelRetirada(String responsavelRetirada) {
-        this.responsavelRetirada = responsavelRetirada;
     }
 
     public LocalDate getDataDevolucao() {
@@ -121,4 +126,11 @@ public class Emprestimo {
         this.id = id;
     }
 
+    @InstanceName
+    @DependsOnProperties({"responsavelRetirada", "responsavelDevolucao"})
+    public String getInstanceName(MetadataTools metadataTools) {
+        return String.format("%s %s",
+                metadataTools.format(responsavelRetirada),
+                metadataTools.format(responsavelDevolucao));
+    }
 }
