@@ -15,7 +15,11 @@ import java.util.UUID;
 @Table(name = "EMPRESTIMO", indexes = {
         @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_RETIRADA", columnList = "RESPONSAVEL_RETIRADA_ID"),
         @Index(name = "IDX_EMPRESTIMO_RESPONSAVEL_DEVOLUCAO", columnList = "RESPONSAVEL_DEVOLUCAO_ID")
-})
+    },
+        uniqueConstraints = {
+            @UniqueConstraint(name = "UNQ_EMPRESTIMO_ID_RFID", columnNames = {"ID_RFID"})
+        }
+)
 @Entity
 public class Emprestimo {
     @JmixGeneratedValue
@@ -50,9 +54,17 @@ public class Emprestimo {
     @Column(name = "OBSERVACOES")
     private String observacoes;
 
-    @Column(name = "ID_RFID", nullable = false)
     @NotNull
+    @Column(name = "ID_RFID", nullable = false)
     private String idRFID;
+
+    public void setIdRFID(String idRFID) {
+        this.idRFID = idRFID;
+    }
+
+    public String getIdRFID() {
+        return idRFID;
+    }
 
     public User getResponsavelDevolucao() {
         return responsavelDevolucao;
@@ -68,14 +80,6 @@ public class Emprestimo {
 
     public void setResponsavelRetirada(User responsavelRetirada) {
         this.responsavelRetirada = responsavelRetirada;
-    }
-
-    public String getIdRFID() {
-        return idRFID;
-    }
-
-    public void setIdRFID(String idRFID) {
-        this.idRFID = idRFID;
     }
 
     public String getObservacoes() {

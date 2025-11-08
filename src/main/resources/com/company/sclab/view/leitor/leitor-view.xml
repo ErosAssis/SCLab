@@ -5,5 +5,9 @@
         <h1>Leitor RFID</h1>
         <span id="statusLabel" text="Conectando ao leitor..." />
         <textField id="tagField" label="Tag Lida" readOnly="true" width="300px"/>
+
+        <h3>Últimas Leituras</h3>
+        <vbox id="historicoLayout" width="300px" spacing="true"/>
     </layout>
 </view>
+

@@ -3,6 +3,7 @@ package com.company.sclab.view.leitor;
 import com.company.sclab.app.RfidService;
 import com.company.sclab.view.main.MainView;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.view.StandardView;
@@ -11,6 +12,9 @@ import io.jmix.flowui.view.ViewComponent;
 import io.jmix.flowui.view.ViewController;
 import io.jmix.flowui.view.ViewDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Route(value = "leitor-view", layout = MainView.class)
 @ViewController("LeitorView")
@@ -26,13 +30,17 @@ public class LeitorView extends StandardView {
     @ViewComponent
     private TextField tagField;
 
+    @ViewComponent
+    private VerticalLayout historicoLayout;
+
     private String portaDetectada;
-    private volatile boolean executando = true; // controla o loop
+    private volatile boolean executando = true;
     private Thread leituraThread;
+
+    private final List<String> historicoTags = new LinkedList<>();
 
     @Subscribe
     public void onInit(InitEvent event) {
-        // Cria uma thread separada para leitura contínua
         leituraThread = new Thread(() -> {
             try {
                 status("Detectando leitor...");
@@ -61,16 +69,14 @@ public class LeitorView extends StandardView {
                             status("Nenhuma tag detectada. Tentando novamente...");
                         }
 
-                        // Delay de 3 segundos entre as leituras
                         Thread.sleep(3000);
 
                     } catch (InterruptedException e) {
-                        // Sai do loop se a thread for interrompida
                         Thread.currentThread().interrupt();
                         break;
                     } catch (Exception e) {
                         status("Erro na leitura: " + e.getMessage());
-                        Thread.sleep(3000); // espera 3s antes de tentar novamente
+                        Thread.sleep(3000);
                     }
                 }
 
@@ -87,7 +93,6 @@ public class LeitorView extends StandardView {
 
     @Subscribe
     public void onBeforeClose(BeforeCloseEvent event) {
-        // Finaliza o loop de leitura ao sair da tela
         executando = false;
         if (leituraThread != null && leituraThread.isAlive()) {
             leituraThread.interrupt();
@@ -99,7 +104,24 @@ public class LeitorView extends StandardView {
         getUI().ifPresent(ui -> ui.access(() -> {
             tagField.setValue(tag);
             statusLabel.setText("Tag detectada: " + tag);
+            atualizarHistorico(tag);
         }));
+    }
+
+    private void atualizarHistorico(String novaTag) {
+        // Adiciona nova tag no início da lista
+        historicoTags.add(0, novaTag);
+
+        // Mantém no máximo 10 itens
+        if (historicoTags.size() > 10) {
+            historicoTags.remove(historicoTags.size() - 1);
+        }
+
+        // Atualiza visualmente a lista
+        historicoLayout.removeAll();
+        for (String tag : historicoTags) {
+            historicoLayout.add(new Span(tag));
+        }
     }
 
     private void status(String msg) {

@@ -3,8 +3,10 @@ package com.company.sclab.view.emprestimo;
 import com.company.sclab.app.RfidService;
 import com.company.sclab.entity.Emprestimo;
 import com.company.sclab.view.main.MainView;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import io.jmix.core.DataManager;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +18,9 @@ public class EmprestimoDetailView extends StandardDetailView<Emprestimo> {
 
     @Autowired
     private RfidService rfidService;
+
+    @Autowired
+    private DataManager dataManager;
 
     @ViewComponent
     private TextField idRFIDField;
@@ -49,5 +54,23 @@ public class EmprestimoDetailView extends StandardDetailView<Emprestimo> {
                 }
             }).start();
         });
+    }
+
+    @Subscribe
+    public void onBeforeSave(BeforeSaveEvent event) {
+        Emprestimo emprestimo = getEditedEntity();
+
+        // Verifica se já existe outro registro com o mesmo RFID
+        boolean jaExiste = dataManager.load(Emprestimo.class)
+                .query("select e from Emprestimo e where e.idRFID = :idRFID and e.id <> :id")
+                .parameter("idRFID", emprestimo.getIdRFID())
+                .parameter("id", emprestimo.getId())
+                .list()
+                .size() > 0;
+
+        if (jaExiste) {
+            Notification.show("⚠️ Já existe um empréstimo com esse código RFID!", 5000, Notification.Position.MIDDLE);
+            event.preventSave(); // Impede o salvamento
+        }
     }
 }
