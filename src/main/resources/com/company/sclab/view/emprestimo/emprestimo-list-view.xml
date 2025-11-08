@@ -54,10 +54,9 @@
                 <column property="dataRetirada"/>
                 <column property="dataDevolucao"/>
                 <column property="observacoes"/>
-                <column property="id"/>
-                <column property="idRFID"/>
                 <column property="responsavelDevolucao"/>
                 <column property="responsavelRetirada"/>
+                <column property="idRFID"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

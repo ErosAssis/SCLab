@@ -3,6 +3,7 @@ package com.company.sclab.security;
 import com.company.sclab.entity.Emprestimo;
 import com.company.sclab.entity.Equipamento;
 import com.company.sclab.entity.TipoEquipamento;
+import com.company.sclab.entity.User;
 import io.jmix.security.model.EntityAttributePolicyAction;
 import io.jmix.security.model.EntityPolicyAction;
 import io.jmix.security.role.annotation.EntityAttributePolicy;
@@ -20,10 +21,6 @@ public interface AcessoAplicacaoRole {
     @ViewPolicy(viewIds = {"Emprestimo.list", "Equipamento.list", "TipoEquipamento.list", "LeitorView", "Emprestimo.detail", "Equipamento.detail", "LoginView", "MainView", "TipoEquipamento.detail"})
     void screens();
 
-    @EntityAttributePolicy(entityClass = Emprestimo.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @EntityPolicy(entityClass = Emprestimo.class, actions = EntityPolicyAction.ALL)
-    void emprestimo();
-
     @EntityAttributePolicy(entityClass = Equipamento.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Equipamento.class, actions = EntityPolicyAction.ALL)
     void equipamento();
@@ -34,4 +31,12 @@ public interface AcessoAplicacaoRole {
 
     @SpecificPolicy(resources = "ui.loginToUi")
     void specific();
+
+    @EntityPolicy(entityClass = User.class, actions = EntityPolicyAction.READ)
+    @EntityAttributePolicy(entityClass = User.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
+    void user();
+
+    @EntityAttributePolicy(entityClass = Emprestimo.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = Emprestimo.class, actions = EntityPolicyAction.ALL)
+    void emprestimo();
 }

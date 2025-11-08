@@ -3,6 +3,15 @@
       title="msg://emprestimoDetailView.title"
       focusComponent="form">
     <data>
+        <collection id="usersDc" class="com.company.sclab.entity.User">
+            <loader id="usersDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from User e
+                    order by e.username asc]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
         <instance id="emprestimoDc"
                   class="com.company.sclab.entity.Emprestimo">
             <fetchPlan extends="_base">
@@ -28,18 +37,8 @@
             <textField id="comodatarioField" property="comodatario"/>
             <datePicker id="dataRetiradaField" property="dataRetirada"/>
             <datePicker id="dataDevolucaoField" property="dataDevolucao"/>
-            <entityPicker id="responsavelRetiradaField" property="responsavelRetirada">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
-            <entityPicker id="responsavelDevolucaoField" property="responsavelDevolucao">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
+            <entityComboBox id="responsavelRetiradaField" property="responsavelRetirada" itemsContainer="usersDc"/>
+            <entityComboBox id="responsavelDevolucaoField" property="responsavelDevolucao" itemsContainer="usersDc"/>
             <textField id="observacoesField" property="observacoes"/>
             <textField id="idRFIDField" property="idRFID"/>
         </formLayout>
